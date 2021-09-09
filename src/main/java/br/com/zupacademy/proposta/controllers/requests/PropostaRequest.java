@@ -1,19 +1,18 @@
 package br.com.zupacademy.proposta.controllers.requests;
 
 import br.com.zupacademy.proposta.models.Proposta;
+import br.com.zupacademy.proposta.repositories.PropostaRepository;
 import br.com.zupacademy.proposta.validation.CPForCNPJ;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
-import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class PropostaRequest {
     @CPForCNPJ @NotBlank
+    //@UniqueValue(fieldName="documento", domainClass=Proposta.class)
     private String documento;
     @NotBlank @Email
     private String email;
@@ -33,7 +32,11 @@ public class PropostaRequest {
         this.salario = salario;
     }
 
-    public Proposta toProposta() {
+    public Proposta toProposta(PropostaRepository propostaRepository) {
+        Optional<Proposta> proposta = propostaRepository.findByDocumento(documento);
+        if(proposta.isPresent()){
+            return null;
+        }
         return new Proposta(documento,email,nome,endereco,salario);
     }
 
@@ -46,5 +49,9 @@ public class PropostaRequest {
                 ", endereco='" + endereco + '\'' +
                 ", salario=" + salario +
                 '}';
+    }
+
+    public String getDocumento() {
+        return documento;
     }
 }
