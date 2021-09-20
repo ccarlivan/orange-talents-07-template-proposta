@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class PropostaRequest {
     @CPForCNPJ @NotBlank
-    //@UniqueValue(fieldName="documento", domainClass=Proposta.class)
     private String documento;
     @NotBlank @Email
     private String email;
@@ -53,5 +52,9 @@ public class PropostaRequest {
 
     public String getDocumento() {
         return documento;
+    }
+
+    public String getNome() {
+        return nome;
     }
 }

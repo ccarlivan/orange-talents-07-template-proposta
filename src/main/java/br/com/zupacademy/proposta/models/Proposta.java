@@ -1,9 +1,8 @@
 package br.com.zupacademy.proposta.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import br.com.zupacademy.proposta.enuns.EstadoProposta;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 @Entity
 public class Proposta {
@@ -14,6 +13,8 @@ public class Proposta {
     private String nome;
     private String endereco;
     private BigDecimal salario;
+    @Enumerated(EnumType.STRING)
+    private EstadoProposta estado;
 
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
         this.documento = documento;
@@ -26,8 +27,24 @@ public class Proposta {
     public Proposta() {
     }
 
+    public void setEstado(String estado){
+        if(estado.equals("SEM_RESTRICAO")){
+            this.estado = EstadoProposta.ELEGIVEL;
+        }else{
+            this.estado = EstadoProposta.NAO_ELEGIVEL;
+        }
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     @Override
